@@ -13,6 +13,12 @@ var screenshot = {
     cordova.exec(callback, callback, 'screenshotName', 'activateDetect', []);
     console.log("Activate Detect Android");
    
+  },
+
+  deactivateDetectAndroid : function(callback) {
+    cordova.exec(callback, callback, 'screenshotName', 'deactivateDetect', []);
+    console.log("Deactivate Detect Android");
+   
   }
 }
 

@@ -56,6 +56,10 @@ function enableDetect() {
   window.plugins.preventscreenshot.activateDetectAndroid(successActivateCallback, errorActivateCallback);
 }
 
+function disableDetect() {
+  window.plugins.preventscreenshot.deactivateDetectAndroid(() => console.log('Detection paused'));
+}
+
 function successActivateCallback(result) {
   console.log(result); // detection running
 }
@@ -65,6 +69,9 @@ function errorActivateCallback(error) {
 }
 
 enableDetect();
+
+// later, when you no longer need to monitor screenshots
+disableDetect();
 
 // Optional: receive raw string payloads ("tookScreenshot" / "background")
 window.plugins.preventscreenshot.registerListener(function (eventName) {
@@ -76,7 +83,8 @@ window.plugins.preventscreenshot.registerListener(function (eventName) {
 ### Android detection specifics
 
 - When `activateDetectAndroid` runs for the first time the plugin requests photo/media read permission (Android 13+ uses `READ_MEDIA_IMAGES`, Android 12 and below keep using `READ_EXTERNAL_STORAGE`).
-- The plugin registers a background `ContentObserver` while your app is foregrounded; it emits the `onTookScreenshot` DOM event as soon as a new screenshot image is added to the MediaStore.
+- The plugin registers a background `ContentObserver` while detect mode is active; it emits the `onTookScreenshot` DOM event as soon as a new screenshot image is added to the MediaStore.
+- Call `deactivateDetectAndroid` to tear down the observer and stop listening when the sensitive screen is no longer visible.
 - If the permission dialog is denied, the error callback receives `"Screenshot detection permission denied"` and no events are fired until the call succeeds.
 
 

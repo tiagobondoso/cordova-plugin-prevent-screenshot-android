@@ -112,6 +112,20 @@ public class ScreenshotBlocker extends CordovaPlugin {
                 }
             });
             return true;
+        } else if (action.equals("deactivateDetect")) {
+            mContext.cordova.getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        useDetectSS = false;
+                        stopScreenshotObserver();
+                        callbackContext.success("Success");
+                    } catch (Exception e) {
+                        callbackContext.error(e.toString());
+                    }
+                }
+            });
+            return true;
         } else if (action.equals("listen")) {
             registerScreenshotListener(callbackContext);
             return true;
