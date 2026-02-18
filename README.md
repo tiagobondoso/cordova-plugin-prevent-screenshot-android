@@ -52,21 +52,32 @@ document.addEventListener("onGoingBackground",function(){
 
 
 //Activate Detect functionality for android
-function EnableDetect() {
+function enableDetect() {
   window.plugins.preventscreenshot.activateDetectAndroid(successActivateCallback, errorActivateCallback);
 }
 
 function successActivateCallback(result) {
-  console.log(result); // true activate - enabled
+  console.log(result); // detection running
 }
 
 function errorActivateCallback(error) {
-  console.log(error);
+  console.error(error);
 }
 
-EnableDetect();
+enableDetect();
+
+// Optional: receive raw string payloads ("tookScreenshot" / "background")
+window.plugins.preventscreenshot.registerListener(function (eventName) {
+  console.log('Screenshot plugin event:', eventName);
+});
 
 ```
+
+### Android detection specifics
+
+- When `activateDetectAndroid` runs for the first time the plugin requests photo/media read permission (Android 13+ uses `READ_MEDIA_IMAGES`, Android 12 and below keep using `READ_EXTERNAL_STORAGE`).
+- The plugin registers a background `ContentObserver` while your app is foregrounded; it emits the `onTookScreenshot` DOM event as soon as a new screenshot image is added to the MediaStore.
+- If the permission dialog is denied, the error callback receives `"Screenshot detection permission denied"` and no events are fired until the call succeeds.
 
 
 

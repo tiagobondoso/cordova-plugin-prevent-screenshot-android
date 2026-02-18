@@ -28,9 +28,10 @@
             </feature>
         </config-file>
 
-	<config-file target="AndroidManifest.xml" parent="/*">
-            <!-- <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> -->
-        </config-file>
+    <config-file target="AndroidManifest.xml" parent="/*">
+        <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+        <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+    </config-file>
             
         <source-file src="src/android/com/coffice/ScreenshotBlocker.java" target-dir="src/com/coffice"/>
         <source-file src="src/android/com/coffice/ScreenShotContentObserver.java" target-dir="src/com/coffice"/>
